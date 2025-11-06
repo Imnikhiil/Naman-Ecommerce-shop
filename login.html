@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NamanShop — Login</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* small overrides for login page */
+    body{padding:0;display:flex;align-items:center;justify-content:center;height:100vh;}
+    .box{width:360px;background:var(--card);border-radius:14px;padding:28px;box-shadow:var(--shadow);border:1px solid rgba(2,6,23,0.03);text-align:center}
+    h2{margin-bottom:8px}
+    .muted-small{color:var(--muted);font-size:13px;margin-bottom:14px}
+    input{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(2,6,23,0.05);margin:8px 0}
+    .row{display:flex;gap:8px;margin-top:8px}
+    .link{color:var(--accent);cursor:pointer}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="logo" style="margin:0 auto 12px;width:64px;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#021226;background:linear-gradient(135deg,var(--accent),var(--accent-2));font-size:20px">NS</div>
+    <h2>NamanShop</h2>
+    <div class="muted-small">Login to continue to your store — demo account: <strong>naman / 1234</strong></div>
+
+    <input id="loginUser" placeholder="Username or email" autocomplete="username">
+    <input id="loginPass" type="password" placeholder="Password" autocomplete="current-password">
+    <div style="text-align:left;font-size:13px;margin-top:6px">
+      <label><input type="checkbox" id="remember" /> Remember me</label>
+    </div>
+
+    <div class="row">
+      <button id="loginBtn" class="btn" style="flex:1">Login</button>
+      <button id="demoBtn" class="ghost" style="flex:1">Demo</button>
+    </div>
+
+    <div style="margin-top:12px">
+      <div class="muted-small">New here? <span id="openSignup" class="link">Create account</span></div>
+      <div id="loginMsg" class="muted-small"></div>
+    </div>
+  </div>
+
+  <!-- signup modal simple -->
+  <div id="signupModal" style="display:none;position:fixed;inset:0;background:rgba(2,6,23,0.5);align-items:center;justify-content:center">
+    <div style="background:var(--card);padding:18px;border-radius:12px;width:360px;border:1px solid rgba(2,6,23,0.03)">
+      <h3>Create Account</h3>
+      <input id="suUser" placeholder="Choose username or email">
+      <input id="suPass" placeholder="Choose password" type="password">
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button id="createAcct" class="btn" style="flex:1">Create</button>
+        <button onclick="document.getElementById('signupModal').style.display='none'" class="ghost" style="flex:1">Cancel</button>
+      </div>
+      <div id="signupMsg" class="muted-small" style="margin-top:8px"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // login handlers
+    document.getElementById('loginBtn').addEventListener('click', ()=>{
+      const u = document.getElementById('loginUser').value.trim();
+      const p = document.getElementById('loginPass').value;
+      const remember = document.getElementById('remember').checked;
+      if(!u || !p){ document.getElementById('loginMsg').textContent = 'Please enter username and password.'; return; }
+      const res = app.doLogin(u,p,remember);
+      if(res.ok){
+        document.getElementById('loginMsg').textContent = 'Login successful — redirecting...';
+        setTimeout(()=> window.location.href = 'index.html', 700);
+      } else {
+        document.getElementById('loginMsg').textContent = 'Invalid credentials. Try demo or sign up.';
+      }
+    });
+
+    document.getElementById('demoBtn').addEventListener('click', ()=>{
+      document.getElementById('loginUser').value = 'naman';
+      document.getElementById('loginPass').value = '1234';
+      document.getElementById('loginBtn').click();
+    });
+
+    document.getElementById('openSignup').addEventListener('click', ()=> document.getElementById('signupModal').style.display = 'flex');
+    document.getElementById('createAcct').addEventListener('click', ()=>{
+      const u = document.getElementById('suUser').value.trim();
+      const p = document.getElementById('suPass').value;
+      if(!u||!p){ document.getElementById('signupMsg').textContent='Provide username & password'; return; }
+      const res = app.signUp(u,p);
+      if(!res.ok){ document.getElementById('signupMsg').textContent = 'User exists — choose another'; return; }
+      document.getElementById('signupMsg').textContent = 'Account created! You can login now.';
+      setTimeout(()=>{ document.getElementById('signupModal').style.display='none'; document.getElementById('loginUser').value = u; document.getElementById('loginPass').value = p; },800);
+    });
+  </script>
+</body>
+</html>
