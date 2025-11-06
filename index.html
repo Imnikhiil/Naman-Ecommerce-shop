@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NamanShop — Store</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">NS</div>
+        <div>
+          <h1>NAMAN SINGH Shop</h1>
+          <div class="muted" id="welcomeLine">Demo E-Commerce — Frontend only</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="search" title="Search (type and results update)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <input id="search" placeholder="Search products..." />
+        </div>
+
+        <select id="category" class="select"><option value="">All Categories</option></select>
+        <select id="sort" class="select">
+          <option value="popular">Sort: Popular</option>
+          <option value="price-asc">Price ↑</option>
+          <option value="price-desc">Price ↓</option>
+        </select>
+
+        <button id="open-cart" class="btn">Cart (<span id="cart-count">0</span>)</button>
+        <button id="logoutBtn" class="ghost">Logout</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section>
+        <div class="filterbar">
+          <input id="minPrice" class="input-sm" placeholder="Min price" type="number" min="0" />
+          <input id="maxPrice" class="input-sm" placeholder="Max price" type="number" min="0" />
+          <button id="applyFilter" class="btn">Apply</button>
+          <button id="resetFilter" class="ghost" id="resetBtn">Reset</button>
+          <div style="margin-left:auto" class="muted">Showing <span id="showingCount">0</span> products</div>
+        </div>
+
+        <div id="products" class="products" aria-live="polite"></div>
+        <div id="empty" class="empty" style="display:none">No products match your search.</div>
+      </section>
+
+      <aside>
+        <div class="cart-title">
+          <div>
+            <div class="muted">Your Cart</div>
+            <strong id="cart-items-label">0 items</strong>
+          </div>
+          <div class="user-badge" id="userBadge">Guest</div>
+        </div>
+
+        <div id="cart-list" class="cart-list"></div>
+
+        <div class="totals">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span class="muted">Subtotal</span><span id="subtotal">₹0</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:12px"><span class="muted">Shipping</span><span id="shipping">₹50</span></div>
+          <div style="display:flex;justify-content:space-between;font-weight:700"><span>Total</span><span id="total">₹0</span></div>
+          <div style="margin-top:12px">
+            <button id="checkout" class="checkout-btn" aria-haspopup="dialog">Proceed to Checkout</button>
+          </div>
+          <div style="margin-top:8px">
+            <button id="clear-cart" class="ghost">Clear Cart</button>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- checkout modal -->
+    <div id="modalBack" class="modal-back" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal" role="document">
+        <h3>Checkout</h3>
+        <div class="muted note">Fill details to place a mock order. This demo stores orders locally only.</div>
+        <div style="margin-bottom:8px">
+          <div class="form-row">
+            <input id="name" placeholder="Full name" />
+            <input id="phone" placeholder="Phone" class="small" />
+          </div>
+          <div class="form-row">
+            <input id="email" placeholder="Email (optional)" />
+          </div>
+          <div class="form-row">
+            <textarea id="address" placeholder="Shipping address" rows="3"></textarea>
+          </div>
+          <div style="display:flex; gap:8px; margin-top:10px">
+            <button id="placeOrder" class="btn">Place Order</button>
+            <button id="closeModal" class="ghost">Cancel</button>
+          </div>
+        </div>
+        <div id="orderMsg" class="muted" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <footer>
+      Built for Naman Singh • Demo site — no real payments. Data kept in browser localStorage.
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // guard: redirect to login if not authenticated
+    if(!app.getAuth || !app.getAuth()){ window.location.href='login.html'; }
+    else { app.authGuardRedirect && app.authGuardRedirect(); }
+
+    // initialize shop page
+    app.initShopPage && app.initShopPage();
+  </script>
+</body>
+</html>
