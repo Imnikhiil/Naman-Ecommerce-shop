@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NamanShop — Cart & Checkout</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .wrap{max-width:1100px;margin:30px auto;padding:20px}
+    table{width:100%;border-collapse:collapse;background:var(--card);border-radius:10px;overflow:hidden;box-shadow:var(--shadow)}
+    th,td{padding:12px;text-align:left;border-bottom:1px solid rgba(2,6,23,0.04)}
+    th{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021226;font-weight:700}
+    .checkout-form{margin-top:16px;background:var(--card);padding:16px;border-radius:10px;box-shadow:var(--shadow)}
+    .checkout-form input, .checkout-form textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(2,6,23,0.03);margin:8px 0}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h2>Cart</h2>
+      <div>
+        <button onclick="window.location.href='index.html'" class="ghost">Continue Shopping</button>
+      </div>
+    </div>
+
+    <table id="cart-table">
+      <tr><th>Product</th><th>Price</th><th>Qty</th><th>Sub</th><th>Action</th></tr>
+    </table>
+
+    <p style="text-align:right;margin-top:8px;font-weight:700">Total (incl. shipping): <span id="cart-total">₹0</span></p>
+
+    <div class="checkout-form">
+      <h3>Checkout Details</h3>
+      <input id="cart_name" placeholder="Full name" />
+      <input id="cart_phone" placeholder="Phone" />
+      <input id="cart_email" placeholder="Email (optional)" />
+      <textarea id="cart_address" placeholder="Shipping address" rows="4"></textarea>
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <button id="cartPlaceOrder" class="btn">Place Order</button>
+        <button onclick="if(confirm('Clear cart?')){ localStorage.removeItem('ns_cart_v1'); location.reload() }" class="ghost">Clear Cart</button>
+      </div>
+      <div id="cartMsg" class="muted" style="margin-top:8px"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // guard & init
+    if(!app.getAuth || !app.getAuth()){ window.location.href='login.html'; }
+    else { app.authGuardRedirect && app.authGuardRedirect(); }
+
+    // load cart page UI
+    app.initCartPage && app.initCartPage();
+  </script>
+</body>
+</html>
